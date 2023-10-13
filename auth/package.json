@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev src/index.ts"
+    "start": "ts-node-dev src/index.ts",
+    "lint:check": "prettier --check src/",
+    "lint:write": "prettier --write src/"
   },
   "keywords": [],
   "author": "",
