@@ -24,6 +24,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  toJSON: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    transform(_doc: any, ret: { id: any; _id: any; password: any; __v: any }) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.password;
+      delete ret.__v;
+    },
+  },
 });
 
 userSchema.pre('save', async function (done) {
