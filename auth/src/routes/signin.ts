@@ -1,7 +1,10 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import mongoose from 'mongoose';
 import { validateRequest } from '../middlewares/validate-request';
+import { User } from '../models/user';
+import { BadRequstError } from '../errors';
+import { Password } from '../services/password';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -12,7 +15,31 @@ router.post(
     body('password').trim().notEmpty().withMessage('Password is empty'),
   ],
   validateRequest,
-  (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    const existingUser = await User.findOne({ email });
+
+    if (!existingUser) {
+      throw new BadRequstError('Invalid Credentials');
+    }
+
+    const passwordsMatch = await Password.compare(existingUser.password, password);
+
+    if (!passwordsMatch) {
+      throw new BadRequstError('Invalid Credentials');
+    }
+
+    const userJwt = jwt.sign(
+      {
+        id: existingUser.id,
+        email: existingUser.email,
+      },
+      process.env.JWT_KEY!,
+    );
+    req.session = { jwt: userJwt };
+    res.status(200).send(existingUser);
+  },
 );
 
 export { router as signinRouter };
