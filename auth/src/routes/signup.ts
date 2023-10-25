@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
+import { body } from 'express-validator';
 import { BadRequstError } from '../errors';
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
+import { validateRequest } from '../middlewares/validate-request';
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.post(
     body('email').isEmail().withMessage('Email must be valid'),
     body('password').trim().isLength({ min: 4, max: 30 }).withMessage('Password must be between 4 and 20 characters'),
   ],
-  validationResult,
+  validateRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
 

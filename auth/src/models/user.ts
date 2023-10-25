@@ -24,15 +24,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
 
-  toJSON: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    transform(_doc: any, ret: { id: any; _id: any; password: any; __v: any }) {
-      ret.id = ret._id;
-      delete ret._id;
-      delete ret.password;
-      delete ret.__v;
-    },
+userSchema.set('toJSON', {
+  virtuals: true,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transform(doc: any, ret: any) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.password;
+    delete ret.__v;
   },
 });
 
