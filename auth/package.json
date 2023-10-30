@@ -6,7 +6,15 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts",
     "lint:check": "prettier --check src/",
-    "lint:write": "prettier --write src/"
+    "lint:write": "prettier --write src/",
+    "test": "jest --watchAll --no-cache"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -26,9 +34,15 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.6",
+    "@types/supertest": "^2.0.15",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
     "eslint": "^8.51.0",
-    "prettier": "^3.0.3"
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^9.0.1",
+    "prettier": "^3.0.3",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1"
   }
 }
