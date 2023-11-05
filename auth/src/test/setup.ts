@@ -1,10 +1,10 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { app } from '../app';
 
 let mongo: undefined | MongoMemoryServer;
 
 beforeAll(async () => {
+  process.env.JWT_KEY = 'test';
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
